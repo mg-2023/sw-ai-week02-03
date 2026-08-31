@@ -68,8 +68,24 @@ def n_queens(n: int) -> int:
     #       ...
     #   place(0)
     #   return count
-    pass
-
+    cols = [0 for i in range(n)]
+    def place(row, cols):
+        if row == n:               # row가 n에 도달했으면
+            return 1               # 경우의 수에 1 추가
+        else:
+            count = 0
+            for i in range(n):              # 현재 가로줄의 모든 칸을 순회
+                placed = True
+                cols[row] = i               # 이 칸에 일단 배치하고
+                if row > 0:                 # 두번째 가로줄부터는
+                    for j in range(row):    # 이전에 배치한 가로줄을 순회
+                        if cols[j] == i or abs(cols[j] - i) == row - j:    # 충돌 검사
+                            placed = False
+                            break
+                if placed:
+                    count += place(row+1, cols)
+        return count
+    return place(0, cols)
 
 if __name__ == "__main__":
     print("[테스트] N=1 ~ N=8 에 대한 가능한 배치의 수")
